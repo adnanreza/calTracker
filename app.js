@@ -184,7 +184,7 @@ const App = (function(ItemCtrl, UICtrl) {
     // edit icon click event
     document
       .querySelector(UISelectors.itemList)
-      .addEventListener("click", itemUpdateSubmit);
+      .addEventListener("click", itemEditClick);
   };
 
   // Add item submit
@@ -210,7 +210,7 @@ const App = (function(ItemCtrl, UICtrl) {
   };
 
   // Update item submit
-  const itemUpdateSubmit = function(e) {
+  const itemEditClick = function(e) {
     // use event delegation here since list is loaded only after item added (not on init)
     if (e.target.classList.contains("edit-item")) {
       // get the list item id (eg. item-0)
