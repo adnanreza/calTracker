@@ -43,6 +43,22 @@ const ItemCtrl = (function() {
 
       return newItem;
     },
+    getItemById: function(id) {
+      let found = null;
+      // loop through item
+      data.items.forEach(function(item) {
+        if (id === item.id) {
+          found = item;
+        }
+      });
+      return found;
+    },
+    getCurrentItem: function() {
+      return data.currentItem;
+    },
+    setCurrentItem: function(item) {
+      data.currentItem = item;
+    },
     getTotalCalories: function() {
       let total = 0;
       // Loop through items and add calories
@@ -122,6 +138,15 @@ const UICtrl = (function() {
     hideList: function() {
       document.querySelector(UISelectors.itemList).style.display = "none";
     },
+    addItemToForm: function() {
+      document.querySelector(
+        UISelectors.itemNameInput
+      ).value = ItemCtrl.getCurrentItem().name;
+      document.querySelector(
+        UISelectors.itemCaloriesInput
+      ).value = ItemCtrl.getCurrentItem().calories;
+      UICtrl.showEditState();
+    },
     showTotalCalories: function(totalCalories) {
       document.querySelector(
         UISelectors.totalCalories
@@ -133,6 +158,12 @@ const UICtrl = (function() {
       document.querySelector(UISelectors.deleteBtn).style.display = "none";
       document.querySelector(UISelectors.backBtn).style.display = "none";
       document.querySelector(UISelectors.addBtn).style.display = "inline";
+    },
+    showEditState: function() {
+      document.querySelector(UISelectors.updateBtn).style.display = "inline";
+      document.querySelector(UISelectors.deleteBtn).style.display = "inline";
+      document.querySelector(UISelectors.backBtn).style.display = "inline";
+      document.querySelector(UISelectors.addBtn).style.display = "none";
     },
     getSelectors: function() {
       return UISelectors;
@@ -150,6 +181,10 @@ const App = (function(ItemCtrl, UICtrl) {
     document
       .querySelector(UISelectors.addBtn)
       .addEventListener("click", itemAddSubmit);
+    // edit icon click event
+    document
+      .querySelector(UISelectors.itemList)
+      .addEventListener("click", itemUpdateSubmit);
   };
 
   // Add item submit
@@ -171,6 +206,26 @@ const App = (function(ItemCtrl, UICtrl) {
       UICtrl.clearInput();
     }
 
+    e.preventDefault();
+  };
+
+  // Update item submit
+  const itemUpdateSubmit = function(e) {
+    // use event delegation here since list is loaded only after item added (not on init)
+    if (e.target.classList.contains("edit-item")) {
+      // get the list item id (eg. item-0)
+      const listId = e.target.parentNode.parentNode.id;
+      // break into an array
+      const listIdArr = listId.split("-");
+      // get actual id
+      const id = parseInt(listIdArr[1]);
+      // get item
+      const itemToEdit = ItemCtrl.getItemById(id);
+      // set current item
+      ItemCtrl.setCurrentItem(itemToEdit);
+      // add item to form
+      UICtrl.addItemToForm();
+    }
     e.preventDefault();
   };
 
