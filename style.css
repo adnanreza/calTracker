@@ -1,0 +1,29 @@
+/* Animations for Add/Edit food item*/
+.card {
+  opacity: 0.8;
+  transition: background-color 0.4s ease-in-out;
+}
+
+.card.editMode {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.card:hover {
+  background-color: #f7f7f7;
+  opacity: 1;
+  transition: background-color 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+/* Animations for Item list */
+#item-list {
+  transform: scale(1, 1);
+  opacity: 0.8;
+  transition: transform 0.2s ease-out, opacity 0.3s ease-out;
+}
+
+#item-list:hover {
+  transform: scale(1.02, 1.02);
+  opacity: 1;
+  transition: transform 0.2s ease-in, opacity 0.3s ease-out;
+}
